@@ -213,7 +213,15 @@ public class Aplicacion {
 	}
 
 	private void ejecutarCerrarYGuardar() {
-
+		
+		try {
+			
+			restaurante.cerrarYGuardarPedido();
+			System.out.println("\nSu pedido se ha realizado exitosamente. Puede consultar su factura.");
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void ejecutarPedidoPorId() {

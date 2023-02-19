@@ -53,7 +53,7 @@ public class Combo implements Producto{
 
 	public String generarTextoFactura() {
 
-		return null;
+		return "\n- " + getNombre() + ": $" + getPrecio();
 	}
 	
 }

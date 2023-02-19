@@ -1,12 +1,15 @@
 package Model;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
 
-	private int numeroPedidos;
+	private static int numeroPedidos = 0;
 	
 	private int idPedido;
 	
@@ -24,6 +27,7 @@ public class Pedido {
 		this.nombreCliente = nombreCliente;
 		this.direccionCliente = direccionCliente;
 		this.itemsPedido = new ArrayList<>();
+		this.idPedido = numeroPedidos;
 	}
 
 //----------- Métodos --------------
@@ -40,24 +44,55 @@ public class Pedido {
 	
 	
 	private int getPrecioNetoPedido() {
-		return 0;
+		
+		int precio = 0;
+		
+		for(Producto producto: itemsPedido) {
+			
+			precio += producto.getPrecio();
+			
+		}
+		
+		return precio;
 	}
 	
 	private int getPrecioTotalPedido() {
-		return 0;
+
+		return getPrecioNetoPedido() + getPrecioIVAPedido();
 	}
 
 	private int getPrecioIVAPedido() {
-		return 0;
+		
+		return (int) (getPrecioNetoPedido() * 0.19);
 	}
 	
 	private String generarTextoFactura() {
-		return null;
+		
+		String textoFactura = "factura\n\nPedido " + idPedido + "\nNombre: " + nombreCliente + "\nDirección: " + direccionCliente + "\n";
+		
+		for(Producto producto: itemsPedido) {
+			
+			textoFactura += producto.generarTextoFactura();
+			
+		}
+		
+		textoFactura += "\n\nPrecio neto: $" + getPrecioNetoPedido();
+		textoFactura += "\n\nPrecio iva: $" + getPrecioIVAPedido();
+		textoFactura += "\n\nPrecio total: $" + getPrecioTotalPedido();
+		
+		return textoFactura;
 	}
 	
 	
-	public void guardadFactura(File archivo) {
+	public void guardarFactura(File archivo) throws IOException {
+		
+		PrintWriter pw = new PrintWriter(new FileWriter(archivo));
+		pw.println(generarTextoFactura());
+		pw.close();
 		
 	}
 	
+	public static void incrementarNumeroPedidos() {
+		numeroPedidos++;
+	}
 }

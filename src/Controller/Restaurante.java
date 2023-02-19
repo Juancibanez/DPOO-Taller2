@@ -46,8 +46,15 @@ public class Restaurante {
 		
 	}
 	
-	public void cerrarYGuardarPedido() {
+	public void cerrarYGuardarPedido() throws IOException {
 		
+		pedidos.add(pedidoEnCurso);
+		
+		Pedido.incrementarNumeroPedidos();
+		
+		File archivo = new File("facturas/factura" + pedidoEnCurso.getIdPedido() + ".txt");
+		pedidoEnCurso.guardarFactura(archivo);
+		pedidoEnCurso = null;
 	}
 	
 	public List<Ingrediente> getIngredientes() {
